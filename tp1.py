@@ -72,8 +72,8 @@ def alta_ticket():
     print("\n--- Alta de nuevo ticket ---")
     descripcion = input("Ingrese descripción del problema: ")
     print("Técnicos válidos: TEC123, ABC456, XYZ789, JKL321, DEF654")
-    tecnico_valido = 1  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 0 (osea: todavia no es valido)
-    while tecnico_valido == 1: # mientras que el tecnico NO sea valido (osea, mientras sea 0), vamos a seguir pidiendo uno
+    tecnico_valido = 1  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
+    while tecnico_valido == 1: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
         tecnico = input("Ingrese el código del técnico asignado: ") # pedimos que escriba el codigo del tecnico
         tecnico_valido = numerorepetido(tecnicos, tecnico)
         # contador = 0 # creamos una variable para contar desde el principio de la lista de tecnicos validos
@@ -82,6 +82,7 @@ def alta_ticket():
         #         tecnico_valido = 1 # entonces el tecnico es valido POR LO TANTO cambiamos a 1 para salir del ciclo
         #     contador = contador + 1 # aumentamos el contador en 1 para revisar el siguiente tecnico en la lista
         if tecnico_valido == 1:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
+            print()
             print("Técnico inválido. Intente de nuevo.")
 
     prioridad = 0
@@ -89,6 +90,7 @@ def alta_ticket():
         prioridad = int(input("Ingrese la prioridad del ticket (1=Alta, 2=Media, 3=Baja): "))
         if prioridad != 1 and prioridad != 2 and prioridad != 3:
             print("Prioridad inválida. Debe ser 1, 2 o 3.")
+            print()
 
 # Generamos un numero random entre 1000 y 9999
     numeroRandom = random.randint(1000, 9999)
