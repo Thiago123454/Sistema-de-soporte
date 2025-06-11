@@ -75,7 +75,7 @@ def alta_ticket():
     tecnico_valido = False  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
     while tecnico_valido == False: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
         tecnico = input("Ingrese el código del técnico asignado: ") # pedimos que escriba el codigo del tecnico
-        tecnico_valido = numerorepetido(tecnicos, tecnico)
+        tecnico_valido = validacion(tecnicos, tecnico)
         if tecnico_valido == False:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
             print()
             print("Técnico inválido. Intente de nuevo.")
@@ -93,10 +93,10 @@ def alta_ticket():
 
 # Generamos un numero random entre 1000 y 9999
     numeroRandom = random.randint(1000, 9999)
-    repetido = numerorepetido(identificadores, numeroRandom)
+    repetido = validacion(identificadores, numeroRandom)
     while repetido == True:
             numeroRandom = random.randint(1000, 9999)
-            repetido = numerorepetido(identificadores, numeroRandom)
+            repetido = validacion(identificadores, numeroRandom)
     nuevo_id = numeroRandom  # Lo usamos como identificador final
     print(nuevo_id)
 
@@ -111,7 +111,7 @@ def alta_ticket():
     print("Técnico:", tecnico)
     print("Prioridad:", prioridad)
 
-def numerorepetido(lista, numero):
+def validacion(lista, numero): #Usar busqueda secuencial
     bandera = 1
     while bandera == 1:
         bandera = 0
@@ -136,28 +136,30 @@ def numerorepetido(lista, numero):
 
 def baja_ticket():
     print("\n--- Baja de ticket ---")
-    posicion = -1
+    id_correcto = False
      # Repetimos hasta que se encuentre un id valido
-    while posicion == -1:
+    while id_correcto == False:
         id_borrar = int(input("Ingrese el identificador del ticket a eliminar: "))
+        id_correcto = validacion(identificadores, id_borrar)
+        # contador = 0
+        # posicion = -1  # reiniciamos por si el anterior intento fue invalido
+        # while contador < len(identificadores):
+        #     if identificadores[contador] == id_borrar:
+        #         posicion = contador  # Guardamos la posicion si lo encontramos
+        #     contador = contador + 1
 
-        contador = 0
-        posicion = -1  # reiniciamos por si el anterior intento fue invalido
-        while contador < len(identificadores):
-            if identificadores[contador] == id_borrar:
-                posicion = contador  # Guardamos la posicion si lo encontramos
-            contador = contador + 1
-
-        if posicion == -1:
+        if id_correcto == False:
             print("El identificador no existe. Intente nuevamente.")
+        else:
+            posicion = ident_posicion(identificadores, id_borrar)
         
         confirmacion = 0  # El profe en el ejemplo q hizo dijo que queda bien preguntar si esta seguro de borrar el dato entonces lo agregamos
-        while confirmacion != 1 and confirmacion != 2: #es mejor usar while en vez del if porque si la opcion no es 1 ni 2 nosotros NO queremos seguir con el programa, tiene q pedir que de una opcion valida
-            print("¿Está seguro que desea eliminar el ticket?")
-            print("1. Sí")
-            print("2. No")
-            confirmacion = int(input("Ingrese una opción (1 para sí o 2 para no): "))
-            if confirmacion != 1 and confirmacion != 2: #porque si elige un numero que no es ni 1 ni 2 avisamos que es incorrecto
+    while confirmacion != 1 and confirmacion != 2: #es mejor usar while en vez del if porque si la opcion no es 1 ni 2 nosotros NO queremos seguir con el programa, tiene q pedir que de una opcion valida
+        print("¿Está seguro que desea eliminar el ticket?")
+        print("1. Sí")
+        print("2. No")
+        confirmacion = int(input("Ingrese una opción (1 para sí o 2 para no): "))
+        if confirmacion != 1 and confirmacion != 2: #porque si elige un numero que no es ni 1 ni 2 avisamos que es incorrecto
                 print("Opción inválida. Ingrese 1 para sí o 2 para no.")
 
         if confirmacion == 1:
@@ -217,7 +219,7 @@ def modificar_ticket():
             tecnico_valido = False
             while tecnico_valido == False:
                 nuevo_tec = input("Ingrese nuevo código de técnico: ")
-                tecnico_valido = numerorepetido(tecnicos, nuevo_tec)
+                tecnico_valido = validacion(tecnicos, nuevo_tec)
                 if tecnico_valido == False:
                     print("Técnico inválido. Intente de nuevo.")
                 else:
