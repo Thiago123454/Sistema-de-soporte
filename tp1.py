@@ -72,8 +72,8 @@ def alta_ticket():
     print("\n--- Alta de nuevo ticket ---")
     descripcion = input("Ingrese descripción del problema: ")
     print("Técnicos válidos: TEC123, ABC456, XYZ789, JKL321, DEF654")
-    tecnico_valido = 1  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
-    while tecnico_valido == 1: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
+    tecnico_valido = False  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
+    while tecnico_valido == False: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
         tecnico = input("Ingrese el código del técnico asignado: ") # pedimos que escriba el codigo del tecnico
         tecnico_valido = numerorepetido(tecnicos, tecnico)
         # contador = 0 # creamos una variable para contar desde el principio de la lista de tecnicos validos
@@ -81,9 +81,13 @@ def alta_ticket():
         #     if tecnico == tecnicos[contador]: # si el codigo que ingreso es igual a uno de los tecnicos de la lista pasa esto:
         #         tecnico_valido = 1 # entonces el tecnico es valido POR LO TANTO cambiamos a 1 para salir del ciclo
         #     contador = contador + 1 # aumentamos el contador en 1 para revisar el siguiente tecnico en la lista
-        if tecnico_valido == 1:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
+        if tecnico_valido == False:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
             print()
             print("Técnico inválido. Intente de nuevo.")
+        
+        
+        
+            
 
     prioridad = 0
     while prioridad != 1 and prioridad != 2 and prioridad != 3:
@@ -95,7 +99,7 @@ def alta_ticket():
 # Generamos un numero random entre 1000 y 9999
     numeroRandom = random.randint(1000, 9999)
     repetido = numerorepetido(identificadores, numeroRandom)
-    while repetido == 1:
+    while repetido == True:
             numeroRandom = random.randint(1000, 9999)
             repetido = numerorepetido(identificadores, numeroRandom)
 # Inicializamos la variable para repetir si es necesario
@@ -116,6 +120,7 @@ def alta_ticket():
     
 
     nuevo_id = numeroRandom  # Lo usamos como identificador final
+    print(nuevo_id)
 
     identificadores.append(nuevo_id)
     descripciones.append(descripcion)
@@ -129,17 +134,23 @@ def alta_ticket():
     print("Prioridad:", prioridad)
 
 def numerorepetido(lista, numero):
-    repetido = 1
-    
-    while repetido == 1:
-        repetido = 0
+    bandera = 1
+    while bandera == 1:
+        bandera = 0
         contador = 0
         while contador < len(lista):
             if numero == lista[contador]:
-                repetido = 1
+                bandera = 1
                 contador = len(lista)
             else:
                 contador = contador + 1
+        if bandera == 1:
+            repetido = True
+            bandera = 0
+        else:
+            repetido = False
+            bandera = 0
+            
 
     return repetido   
 
@@ -181,6 +192,17 @@ def baja_ticket():
         else:
             print("Eliminación cancelada.")
 
+def ident_posicion(lista, num):
+    cont = 0
+    while cont < len(lista):
+        if num == lista[cont]:
+            pos = cont
+            cont = len(lista)
+    
+    return pos
+            
+
+
 # 6 MODIFICACIÓN DE TICKET
 
 def modificar_ticket():
@@ -214,17 +236,15 @@ def modificar_ticket():
             print("Descripción actualizada.")
         elif opcion == 2:
             print("Técnicos válidos: TEC123, ABC456, XYZ789, JKL321, DEF654")
-            tecnico_valido = 0
-            while tecnico_valido == 0:
+            tecnico_valido = False
+            while tecnico_valido == False:
                 nuevo_tec = input("Ingrese nuevo código de técnico: ")
-                contador = 0
-                tecnico_valido = 0
-                while contador < len(tecnicos) and tecnico_valido == 0:
-                    if nuevo_tec == tecnicos[contador]:
-                        tecnico_valido = 1
-                    contador = contador + 1
-                if tecnico_valido == 0:
+                tecnico_valido = numerorepetido(tecnicos, nuevo_tec)
+                if tecnico_valido == False:
                     print("Técnico inválido. Intente de nuevo.")
+                else:
+                    posicion = ident_posicion(tecnicos, nuevo_tec)
+
             tecnicos[posicion] = nuevo_tec
             print("Técnico actualizado.")
 # Si el usuario elige la opcion 2, quiere modificar el tecnico asignado a un ticket
