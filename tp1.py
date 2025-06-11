@@ -76,11 +76,6 @@ def alta_ticket():
     while tecnico_valido == False: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
         tecnico = input("Ingrese el código del técnico asignado: ") # pedimos que escriba el codigo del tecnico
         tecnico_valido = numerorepetido(tecnicos, tecnico)
-        # contador = 0 # creamos una variable para contar desde el principio de la lista de tecnicos validos
-        # while contador < len(tecnicos): # mientras el contador no llegue al final de la lista:
-        #     if tecnico == tecnicos[contador]: # si el codigo que ingreso es igual a uno de los tecnicos de la lista pasa esto:
-        #         tecnico_valido = 1 # entonces el tecnico es valido POR LO TANTO cambiamos a 1 para salir del ciclo
-        #     contador = contador + 1 # aumentamos el contador en 1 para revisar el siguiente tecnico en la lista
         if tecnico_valido == False:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
             print()
             print("Técnico inválido. Intente de nuevo.")
@@ -102,23 +97,6 @@ def alta_ticket():
     while repetido == True:
             numeroRandom = random.randint(1000, 9999)
             repetido = numerorepetido(identificadores, numeroRandom)
-# Inicializamos la variable para repetir si es necesario
-    #repetido = 1  # Supongamos que esta repetido para entrar al while
-
-# Mientras el numero este repetido, generamos otro
-    # while repetido == 1:
-    #     repetido = 0  # Suponemos que no esta repetido
-    #
-    #     contador = 0  # Empezamos a buscar desde el principio de la lista
-    #     while contador < len(identificadores):
-    #         if numeroRandom == identificadores[contador]:
-    #             repetido = 1  # Si lo encontramos repetido, lo marcamos
-    #         contador = contador + 1
-    
-
-    # Si estaba repetido, generamos uno nuevo para volver a verificar
-    
-
     nuevo_id = numeroRandom  # Lo usamos como identificador final
     print(nuevo_id)
 
