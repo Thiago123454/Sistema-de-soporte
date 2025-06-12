@@ -14,6 +14,7 @@ descripciones = [
     "Pantalla azul al iniciar"
 ]
 tecnicos = ["TEC123", "ABC456", "XYZ789", "JKL321", "DEF654"]
+nombres = ["Luciano", "Tatiana", "Yamil", "Emilia", "Francisca"]
 prioridades = [1, 2, 3, 1, 2]  # 1 = alta 2 = media 3 = baja
 
 # 2 FUNCION DE LOGIN
@@ -72,11 +73,11 @@ def alta_ticket():
     print("\n--- Alta de nuevo ticket ---")
     descripcion = input("Ingrese descripción del problema: ")
     print("Técnicos válidos: TEC123, ABC456, XYZ789, JKL321, DEF654")
-    tecnico_valido = False  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
-    while tecnico_valido == False: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
+    tecnico_valido = -1  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
+    while tecnico_valido == -1: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
         tecnico = input("Ingrese el código del técnico asignado: ") # pedimos que escriba el codigo del tecnico
         tecnico_valido = validacion(tecnicos, tecnico)
-        if tecnico_valido == False:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
+        if tecnico_valido == -1:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
             print()
             print("Técnico inválido. Intente de nuevo.")
         
@@ -110,48 +111,29 @@ def alta_ticket():
     print("Descripción:", descripcion)
     print("Técnico:", tecnico)
     print("Prioridad:", prioridad)
-
-def validacion(lista, numero): #Usar busqueda secuencial
-    bandera = 1
-    while bandera == 1:
-        bandera = 0
-        contador = 0
-        while contador < len(lista):
-            if numero == lista[contador]:
-                bandera = 1
-                contador = len(lista)
-            else:
-                contador = contador + 1
-        if bandera == 1:
-            repetido = True
-            bandera = 0
-        else:
-            repetido = False
-            bandera = 0
-            
-
-    return repetido   
+# BUSQUEDA SECUENCIAL
+def validacion(lista, numero): 
+    i = 0
+    while i < len(lista) and lista[i] != numero:
+        i = i + 1
+    if i < len(lista):
+        return i
+    else:
+        return -1  
 
 # 5 BAJA DE TICKET
 
 def baja_ticket():
     print("\n--- Baja de ticket ---")
-    id_correcto = False
+    id_correcto = -1
      # Repetimos hasta que se encuentre un id valido
-    while id_correcto == False:
+    while id_correcto == -1:
         id_borrar = int(input("Ingrese el identificador del ticket a eliminar: "))
         id_correcto = validacion(identificadores, id_borrar)
-        # contador = 0
-        # posicion = -1  # reiniciamos por si el anterior intento fue invalido
-        # while contador < len(identificadores):
-        #     if identificadores[contador] == id_borrar:
-        #         posicion = contador  # Guardamos la posicion si lo encontramos
-        #     contador = contador + 1
-
-        if id_correcto == False:
+        if id_correcto == -1:
             print("El identificador no existe. Intente nuevamente.")
         else:
-            posicion = ident_posicion(identificadores, id_borrar)
+            posicion = id_correcto
         
         confirmacion = 0  # El profe en el ejemplo q hizo dijo que queda bien preguntar si esta seguro de borrar el dato entonces lo agregamos
     while confirmacion != 1 and confirmacion != 2: #es mejor usar while en vez del if porque si la opcion no es 1 ni 2 nosotros NO queremos seguir con el programa, tiene q pedir que de una opcion valida
@@ -172,36 +154,23 @@ def baja_ticket():
         else:
             print("Eliminación cancelada.")
 
-def ident_posicion(lista, num):
-    cont = 0
-    while cont < len(lista):
-        if num == lista[cont]:
-            pos = cont
-            cont = len(lista)
-    
-    return pos
-            
 
 
 # 6 MODIFICACIÓN DE TICKET
 
 def modificar_ticket():
     print("\n--- Modificación de ticket ---")
+    
     posicion = -1
 
     # repetimos hasta que se ingrese un id que exista
     while posicion == -1:
         id_modificar = int(input("Ingrese el identificador del ticket a modificar: "))
-
-        contador = 0
-        posicion = -1  # reiniciamos cada vez que vuelve a pedir
-        while contador < len(identificadores):
-            if identificadores[contador] == id_modificar:
-                posicion = contador
-            contador = contador + 1
-
+        id_correcto = validacion(identificadores, id_modificar)
         if posicion == -1:
             print("El identificador no existe. Intente nuevamente.")
+        else:
+            posicion = id_correcto
 
 
     # Mostramos opciones para modificar
@@ -216,14 +185,14 @@ def modificar_ticket():
             print("Descripción actualizada.")
         elif opcion == 2:
             print("Técnicos válidos: TEC123, ABC456, XYZ789, JKL321, DEF654")
-            tecnico_valido = False
-            while tecnico_valido == False:
+            tecnico_valido = -1
+            while tecnico_valido == -1:
                 nuevo_tec = input("Ingrese nuevo código de técnico: ")
                 tecnico_valido = validacion(tecnicos, nuevo_tec)
-                if tecnico_valido == False:
+                if tecnico_valido == -1:
                     print("Técnico inválido. Intente de nuevo.")
                 else:
-                    posicion = ident_posicion(tecnicos, nuevo_tec)
+                    posicion = tecnico_valido
 
             tecnicos[posicion] = nuevo_tec
             print("Técnico actualizado.")
