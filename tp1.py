@@ -51,6 +51,7 @@ def mostrar_menu():
     print("2. Baja de ticket")
     print("3. Modificación de ticket")
     print("4. Listado general")
+    print("5. Cantidad de casos por tecnico")
     print("0. Salir del sistema")
 
     opcion = -1 # Valor inicial invalido para entrar al ciclo de validacion
@@ -60,12 +61,14 @@ def mostrar_menu():
     # Si no ponemos "opcion" cuando hagamos "while opcion < 0 or opcion > 4:" nos va a salir error xq la variable no esta definida
     # Elegimos un valor fuera del rango valido para asegurarnos que pida una opcion valida antes de continuar
 
-    while opcion < 0 or opcion > 4: # Por si acaso, si el usuario escribe algo que no sea un numero el programa se va a romper pero el profe dijo que eso no importa porque esto lo vemos mas adelante
-        opcion = int(input("Ingrese una opción del menú para proseguir (0-4): "))
-        if opcion < 0 or opcion > 4:
-            print("Opción inválida. Debe estar entre 0 y 4.")
+    while opcion < 0 or opcion > 5: # Por si acaso, si el usuario escribe algo que no sea un numero el programa se va a romper pero el profe dijo que eso no importa porque esto lo vemos mas adelante
+        opcion = int(input("Ingrese una opción del menú para proseguir (0-5): "))
+        if opcion < 0 or opcion > 5:
+            print("Opción inválida. Debe estar entre 0 y 5.")
 
     return opcion
+
+
 
 # 4 ALTA DE TICKET
 
@@ -278,7 +281,41 @@ def listado_general():
 
         # Sumamos 1 a 'i' para pasar al siguiente ticket
         i = i + 1
-        
+# Función que cuenta la cantidad de casos por técnico 
+def obtener_cantidad_casos(tecnicos_asignados, tecnico):
+    cantidad = 0
+    i = 0
+    while i < len(tecnicos_asignados):
+        if tecnicos_asignados[i] == tecnico:
+            cantidad = cantidad + 1
+        i = i + 1
+    return cantidad
+
+# Función que arma la matriz de estadísticas
+def armar_matriz_tecnicos(tecnicos_validos, tecnicos_asignados):
+    matriz_tecnicos = []
+    i = 0
+    while i < len(tecnicos_validos):
+        tecnico = tecnicos_validos[i]
+        cantidad = obtener_cantidad_casos(tecnicos_asignados, tecnico)
+        fila = [tecnico, cantidad]
+        matriz_tecnicos.append(fila)  # Agregamos una fila: técnico y cantidad de casos
+        i = i + 1
+    return matriz_tecnicos
+
+# Mostrar el informe en pantalla
+def mostrar_casos_por_tecnico():
+    print("\n--- Cantidad de casos asignados por técnico ---")
+    tecnicos_validos = ["TEC123", "ABC456", "XYZ789", "JKL321", "DEF654"]
+    matriz = armar_matriz_tecnicos(tecnicos_validos, tecnicos)
+
+    i = 0
+    while i < len(matriz):
+        print("Técnico:", matriz[i][0], "- Casos asignados:", matriz[i][1])
+        i = i + 1
+
+
+
 # 8 PROGRAMA PRINCIPAL
 # Primero pedimos login al usuario
 login()
@@ -296,6 +333,8 @@ while opcion != 0:
         modificar_ticket()
     elif opcion == 4:
         listado_general()
+    elif opcion == 5:
+        mostrar_casos_por_tecnico()
 
 print("Gracias por usar el sistema. Fin.")
 
