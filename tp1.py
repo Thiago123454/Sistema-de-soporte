@@ -14,7 +14,11 @@ descripciones = [
     "Pantalla azul al iniciar"
 ]
 tecnicos = ["TEC123", "ABC456", "XYZ789", "JKL321", "DEF654"]
+#Modificacion legajos
+legajos = ["TEC123", "ABC456", "XYZ789", "JKL321", "DEF654"]
 nombres = ["Luciano", "Tatiana", "Yamil", "Emilia", "Francisca"]
+estado = ["Activo", "Activo", "Activo", "Activo", "Activo"]
+
 prioridades = [1, 2, 3, 1, 2]  # 1 = alta 2 = media 3 = baja
 
 # 2 FUNCION DE LOGIN
@@ -52,6 +56,9 @@ def mostrar_menu():
     print("3. Modificación de ticket")
     print("4. Listado general")
     print("5. Cantidad de casos por tecnico")
+    print("6. Alta de tecnico")
+    print("7. Modificacion de tecnicos")
+    print("8. Baja de tecnicos")
     print("0. Salir del sistema")
 
     opcion = -1 # Valor inicial invalido para entrar al ciclo de validacion
@@ -61,33 +68,80 @@ def mostrar_menu():
     # Si no ponemos "opcion" cuando hagamos "while opcion < 0 or opcion > 4:" nos va a salir error xq la variable no esta definida
     # Elegimos un valor fuera del rango valido para asegurarnos que pida una opcion valida antes de continuar
 
-    while opcion < 0 or opcion > 5: # Por si acaso, si el usuario escribe algo que no sea un numero el programa se va a romper pero el profe dijo que eso no importa porque esto lo vemos mas adelante
-        opcion = int(input("Ingrese una opción del menú para proseguir (0-5): "))
-        if opcion < 0 or opcion > 5:
-            print("Opción inválida. Debe estar entre 0 y 5.")
+    while opcion < 0 or opcion > 8: # Por si acaso, si el usuario escribe algo que no sea un numero el programa se va a romper pero el profe dijo que eso no importa porque esto lo vemos mas adelante
+        opcion = int(input("Ingrese una opción del menú para proseguir (0-8): "))
+        if opcion < 0 or opcion > 8:
+            print("Opción inválida. Debe estar entre 0 y 8.")
 
     return opcion
-
-
-
+#  ALTA DE TECNICO
+def alta_tecnico():
+    print("\n--- Alta de nuevo tecnico ---")
+    nombre_nuevo = input("Ingrese el nombre del nuevo tecnico: ")
+    nombres.append(nombre_nuevo)
+    print(nombres)
+    codigo_valido = -2
+    while codigo_valido != -1:
+        codigo = input("Ingrese el código del tecnico (debe incluir 3 letras y 3 números. Ej TEC123): ")
+        codigo_valido = validacion(legajos, codigo)
+        if codigo_valido != -1:
+            print("El código de tecnico ya está en la lista. Intentelo de nuevo.")
+        else:
+            legajos.append(codigo)
+            estado.append("Activo")
+            print(legajos)
+            print(estado)
+    
+# MODIFICACION DE TECNICO
+def modificacion_tecnico():
+    print("\n--- Modificacion de tecnico ya existente---")
+    tecnico_valido = -1
+    while tecnico_valido == -1:
+        tecnico_a_modificar = input("Ingrese el tecnico que quiere modificar: ")
+        tecnico_valido = validacion(legajos, tecnico_a_modificar)
+        if tecnico_valido == -1:
+            print("Tecnico a modificar inexistente. Intente de nuevo.")
+        else:
+            posicion_tecnico_en_legajos = tecnico_valido
+            nombre_nuevo = input("Ingrese el nombre nuevo a reemplazar: ")
+            nombres[posicion_tecnico_en_legajos] = nombre_nuevo
+            print(legajos)
+            print(nombres)
+            print(estado)      
+# BAJA DE TECNICO
+def baja_tecnico():
+    print("\n--- Baja de tecnico ---")
+    legajo_correcto = -1
+     # Repetimos hasta que se encuentre un id valido
+    while legajo_correcto == -1:
+        legajo_borrar = input("Ingrese el legajo de tecnico a eliminar: ")
+        legajo_correcto = validacion(legajos, legajo_borrar)
+        if legajo_correcto == -1:
+            print("El legajo no existe. Intente nuevamente.")
+        else:
+            posicion = legajo_correcto
+            inactivo = "Inactivo"
+            estado[posicion] = inactivo
+    print(legajos)
+    print(nombres)
+    print(estado)
 # 4 ALTA DE TICKET
 
 def alta_ticket():
     print("\n--- Alta de nuevo ticket ---")
     descripcion = input("Ingrese descripción del problema: ")
-    print("Técnicos válidos: TEC123, ABC456, XYZ789, JKL321, DEF654")
     tecnico_valido = -1  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
     while tecnico_valido == -1: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
         tecnico = input("Ingrese el código del técnico asignado: ") # pedimos que escriba el codigo del tecnico
-        tecnico_valido = validacion(tecnicos, tecnico)
+        tecnico_valido = validacion(legajos, tecnico)
         if tecnico_valido == -1:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
             print()
-            print("Técnico inválido. Intente de nuevo.")
-        
-        
-        
+            print("Técnico invalido. Intentelo de nuevo")
+        else:
+            if estado[tecnico_valido] == "Inactivo":
+                print("Tecnico dado de baja, escoja otro tecnico")
+                tecnico_valido = -1
             
-
     prioridad = 0
     while prioridad != 1 and prioridad != 2 and prioridad != 3:
         prioridad = int(input("Ingrese la prioridad del ticket (1=Alta, 2=Media, 3=Baja): "))
@@ -114,6 +168,7 @@ def alta_ticket():
     print("Descripción:", descripcion)
     print("Técnico:", tecnico)
     print("Prioridad:", prioridad)
+
 # BUSQUEDA SECUENCIAL
 def validacion(lista, numero): 
     i = 0
@@ -163,7 +218,8 @@ def baja_ticket():
 
 def modificar_ticket():
     print("\n--- Modificación de ticket ---")
-    
+    print(identificadores)
+    print(tecnicos)
     posicion = -1
 
     # repetimos hasta que se ingrese un id que exista
@@ -174,7 +230,6 @@ def modificar_ticket():
             print("El identificador no existe. Intente nuevamente.")
         else:
             posicion = id_correcto
-
 
     # Mostramos opciones para modificar
         print("1. Modificar descripción")
@@ -187,15 +242,21 @@ def modificar_ticket():
             descripciones[posicion] = nueva_desc
             print("Descripción actualizada.")
         elif opcion == 2:
-            print("Técnicos válidos: TEC123, ABC456, XYZ789, JKL321, DEF654")
+            print(identificadores)
+            print(descripciones)
+            print(tecnicos)
             tecnico_valido = -1
             while tecnico_valido == -1:
                 nuevo_tec = input("Ingrese nuevo código de técnico: ")
-                tecnico_valido = validacion(tecnicos, nuevo_tec)
+                tecnico_valido = validacion(legajos, nuevo_tec)
                 if tecnico_valido == -1:
                     print("Técnico inválido. Intente de nuevo.")
                 else:
-                    posicion = tecnico_valido
+                    if estado[tecnico_valido] == "Inactivo":
+                        print("Tecnico dado de baja, escoja otro tecnico")
+                        tecnico_valido = -1
+                
+                    
 
             tecnicos[posicion] = nuevo_tec
             print("Técnico actualizado.")
@@ -282,6 +343,7 @@ def listado_general():
         # Sumamos 1 a 'i' para pasar al siguiente ticket
         i = i + 1
 # Función que cuenta la cantidad de casos por técnico 
+# MODIFICAR
 def obtener_cantidad_casos(tecnicos_asignados, tecnico):
     cantidad = 0
     i = 0
@@ -335,6 +397,12 @@ while opcion != 0:
         listado_general()
     elif opcion == 5:
         mostrar_casos_por_tecnico()
+    elif opcion == 6:
+        alta_tecnico()
+    elif opcion == 7:
+        modificacion_tecnico()
+    elif opcion == 8:
+        baja_tecnico()
 
 print("Gracias por usar el sistema. Fin.")
 
