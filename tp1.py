@@ -1,5 +1,4 @@
-#  VARIABLES GLOBALES
-# Definimos listas globales asi podemos acceder a los datos desde cualquier parte del programa, puse admin primero porque el profe dijo que todos los sistemas tienen una asi
+# VARIABLES GLOBALES
 import random
 usuarios = ["admin", "Luciana", "Thiago", "Yanina", "Emiliano", "Franco"]
 contrasenias = ["admin", "uade2426", "santodomingo", "yanina1234", "soylider20", "messi10"]
@@ -14,17 +13,13 @@ descripciones = [
     "Pantalla azul al iniciar"
 ]
 tecnicos = ["TEC123", "ABC456", "XYZ789", "JKL321", "DEF654"]
-#Modificacion legajos
+prioridades = [1, 2, 3, 1, 2]  # 1 = alta 2 = media 3 = baja
+#Listas paralelas para los tecnicos
 legajos = ["TEC123", "ABC456", "XYZ789", "JKL321", "DEF654"]
 nombres = ["Luciano", "Tatiana", "Yamil", "Emilia", "Francisca"]
 estado = ["Activo", "Activo", "Activo", "Activo", "Activo"]
 
-prioridades = [1, 2, 3, 1, 2]  # 1 = alta 2 = media 3 = baja
-
 #  FUNCION DE LOGIN
-
-# Esta funcion valida el acceso del usuario, se va a repetir hasta que se ingresen usuario y contraseña validos
-
 def login():
     print("Bienvenido al sistema de soporte técnico.")
 
@@ -48,7 +43,6 @@ def login():
             print("Usuario o contraseña incorrectos. Intente nuevamente.")
 
 #  FUNCION PARA MOSTRAR EL MENU Y VALIDAR LA OPCION
-
 def mostrar_menu():
     print("\n--- Menú principal ---")
     print("1. Alta de ticket")
@@ -61,14 +55,9 @@ def mostrar_menu():
     print("8. Cantidad de casos por tecnico")
     print("0. Salir del sistema")
 
-    opcion = -1 # Valor inicial invalido para entrar al ciclo de validacion
-    # Inicializamos "opcion" con -1 para que la variable exista antes del ciclo "while"
-    # Esto evita errores porque en thonny se puede usar una variable no definida en una condicion
-    # -1 no es una opción valida del menu (que va de 0 a 4), asi que garantiza que el ciclo "while" se ejecute al menos una vez para pedir la opcion al usuario
-    # Si no ponemos "opcion" cuando hagamos "while opcion < 0 or opcion > 4:" nos va a salir error xq la variable no esta definida
-    # Elegimos un valor fuera del rango valido para asegurarnos que pida una opcion valida antes de continuar
+    opcion = -1 
 
-    while opcion < 0 or opcion > 8: # Por si acaso, si el usuario escribe algo que no sea un numero el programa se va a romper pero el profe dijo que eso no importa porque esto lo vemos mas adelante
+    while opcion < 0 or opcion > 8: 
         opcion = int(input("Ingrese una opción del menú para proseguir (0-8): "))
         if opcion < 0 or opcion > 8:
             print("Opción inválida. Debe estar entre 0 y 8.")
@@ -80,11 +69,11 @@ def mostrar_menu():
 def alta_ticket():
     print("\n--- Alta de nuevo ticket ---")
     descripcion = input("Ingrese descripción del problema: ")
-    tecnico_valido = -1  # esta variable sirve para saber si el tecnico ingresado es valido o no. Empezamos con 1 (osea: todavia no es valido)
-    while tecnico_valido == -1: # mientras que el tecnico NO sea valido (osea, mientras sea 1), vamos a seguir pidiendo uno
-        tecnico = input("Ingrese el código del técnico asignado: ") # pedimos que escriba el codigo del tecnico
+    tecnico_valido = -1  
+    while tecnico_valido == -1: 
+        tecnico = input("Ingrese el código del técnico asignado: ") 
         tecnico_valido = validacion(legajos, tecnico)
-        if tecnico_valido == -1:  # cuando termina de recorrer la lista, si todavia no encontro ningun tecnico igual pasa esto
+        if tecnico_valido == -1:  
             print()
             print("Técnico invalido. Intentelo de nuevo")
         else:
@@ -129,12 +118,11 @@ def validacion(lista, numero):
     else:
         return -1  
 
-#  BAJA DE TICKET
+# BAJA DE TICKET
 
 def baja_ticket():
     print("\n--- Baja de ticket ---")
     id_correcto = -1
-     # Repetimos hasta que se encuentre un id valido
     while id_correcto == -1:
         id_borrar = int(input("Ingrese el identificador del ticket a eliminar: "))
         id_correcto = validacion(identificadores, id_borrar)
@@ -143,17 +131,16 @@ def baja_ticket():
         else:
             posicion = id_correcto
         
-        confirmacion = 0  # El profe en el ejemplo q hizo dijo que queda bien preguntar si esta seguro de borrar el dato entonces lo agregamos
-    while confirmacion != 1 and confirmacion != 2: #es mejor usar while en vez del if porque si la opcion no es 1 ni 2 nosotros NO queremos seguir con el programa, tiene q pedir que de una opcion valida
+        confirmacion = 0  
+    while confirmacion != 1 and confirmacion != 2: 
         print("¿Está seguro que desea eliminar el ticket?")
         print("1. Sí")
         print("2. No")
         confirmacion = int(input("Ingrese una opción (1 para sí o 2 para no): "))
-        if confirmacion != 1 and confirmacion != 2: #porque si elige un numero que no es ni 1 ni 2 avisamos que es incorrecto
+        if confirmacion != 1 and confirmacion != 2: 
                 print("Opción inválida. Ingrese 1 para sí o 2 para no.")
 
         if confirmacion == 1:
-             # Eliminamos el ticket en todas las listas paralelas
             identificadores.pop(posicion)
             descripciones.pop(posicion)
             tecnicos.pop(posicion)
@@ -172,14 +159,12 @@ def modificar_ticket():
     print(tecnicos)
     posicion = -1
 
-    # repetimos hasta que se ingrese un id que exista
     while posicion == -1:
         id_modificar = int(input("Ingrese el identificador del ticket a modificar: "))
         posicion = validacion(identificadores, id_modificar)
         if posicion == -1:
             print("El identificador no existe. Intente nuevamente.")
 
-    # Mostramos opciones para modificar
     print("1. Modificar descripción")
     print("2. Modificar técnico")
     print("3. Modificar prioridad")
@@ -208,12 +193,6 @@ def modificar_ticket():
 
         tecnicos[posicion] = nuevo_tec
         print("Técnico actualizado.")
-# Si el usuario elige la opcion 2, quiere modificar el tecnico asignado a un ticket
-# 1ro mostramos cuales son los codigos validos que puede usar, por eso el print de tecnicos validos
-# Despues entramos a un ciclo (while tecnico_valido == 0:) que se repite hasta que ingrese un codigo correcto
-# recorremos la lista de tecnicos y comparamos uno por uno con el valor que ingreso
-# si no coincide con ninguno, se vuelve a pedir
-# cuando se encuentra uno valido, se actualiza el valor en la lista de tecnicos y se avisa que se modifico 
             
     elif opcion == 3:
         nueva_prio = 0
@@ -222,7 +201,7 @@ def modificar_ticket():
             if nueva_prio != 1 and nueva_prio != 2 and nueva_prio != 3:
                 print("Prioridad inválida.")
             else:
-                prioridades[posicion] = nueva_prio #Modificado por Thiago
+                prioridades[posicion] = nueva_prio
                 print("Prioridad actualizada.")
     else:
         print("Opción inválida.")
@@ -232,55 +211,44 @@ def modificar_ticket():
 def listado_general():
     print("\n--- Listado general de tickets (ordenados por prioridad) ---")
 
-    # Guardamos la cantidad de tickets (todas las listas tienen la misma longitud)
     largo = len(prioridades)
 
-    # Ordenamos las listas paralelas usando el metodo de SELECCION
-    # Recorremos desde la primera posicion hasta la penultima
+    # Ordenamos las listas paralelas usando el metodo de SELECCION por prioridad
     for i in range(largo - 1):
 
-        # En cada paso, comparamos el ticket actual con todos los siguientes
         for j in range(i + 1, largo):
 
-            # Si la prioridad en la posicion i es mayor que en la j, intercambiamos todo
-            # Esto es porque queremos que 1 (alta) este antes que 2 o 3 (mas baja)
             if prioridades[i] > prioridades[j]:
 
-                # Intercambiamos los valores de prioridad
                 aux = prioridades[i]
                 prioridades[i] = prioridades[j]
                 prioridades[j] = aux
 
-                # Intercambiamos los identificadores correspondientes
                 aux = identificadores[i]
                 identificadores[i] = identificadores[j]
                 identificadores[j] = aux
 
-                # Intercambiamos las descripciones correspondientes
                 aux = descripciones[i]
                 descripciones[i] = descripciones[j]
                 descripciones[j] = aux
 
-                # Intercambiamos los tecnicos correspondientes
                 aux = tecnicos[i]
                 tecnicos[i] = tecnicos[j]
                 tecnicos[j] = aux
 
     # Ya estan ordenadas todas las listas por prioridad (de menor a mayor)
-    # Ahora mostramos los tickets uno por uno
 
-    i = 0  # Usamos una variable 'i' para recorrer las listas desde el inicio
+    i = 0  
 
-    # Recorremos todas las posiciones de las listas paralelas
-    while i < len(identificadores):  # El largo es el mismo para todas las listas
+    while i < len(identificadores):  
 
-        # Mostramos el identificador del ticket en la posicion 'i'
+     
         print("ID:", identificadores[i])
 
-        # Mostramos la descripcion del problema en esa misma posicion
+      
         print("Descripción:", descripciones[i])
 
-        # Mostramos el codigo del tecnico asignado
+       
         print("Técnico asignado:", tecnicos[i])
 
         # Mostramos la prioridad (1 = alta, 2 = media, 3 = baja)
@@ -288,7 +256,6 @@ def listado_general():
 
         print("---------------------------")
 
-        # Sumamos 1 a 'i' para pasar al siguiente ticket
         i = i + 1
 
 # ALTA DE TECNICO
@@ -316,7 +283,7 @@ def modificacion_tecnico():
     print("\n--- Modificacion de tecnico ya existente---")
     tecnico_valido = -1
     while tecnico_valido == -1:
-        tecnico_a_modificar = input("Ingrese el tecnico que quiere modificar: ")
+        tecnico_a_modificar = input("Ingrese el código del tecnico que quiere modificar: ")
         tecnico_valido = validacion(legajos, tecnico_a_modificar)
         if tecnico_valido == -1:
             print("Tecnico a modificar inexistente. Intente de nuevo.")
@@ -331,12 +298,11 @@ def modificacion_tecnico():
 def baja_tecnico():
     print("\n--- Baja de tecnico ---")
     legajo_correcto = -1
-     # Repetimos hasta que se encuentre un id valido
     while legajo_correcto == -1:
-        legajo_borrar = input("Ingrese el legajo de tecnico a eliminar: ")
+        legajo_borrar = input("Ingrese el código del tecnico a eliminar: ")
         legajo_correcto = validacion(legajos, legajo_borrar)
         if legajo_correcto == -1:
-            print("El legajo no existe. Intente nuevamente.")
+            print("El código del tecnico no existe. Intente nuevamente.")
         else:
             posicion = legajo_correcto
             inactivo = "Inactivo"
@@ -345,7 +311,7 @@ def baja_tecnico():
     print(nombres)
     print(estado)
 
-# Funciones para la matriz que cuenta la cantidad de casos por técnico 
+# Funciones para la MATRIZ que cuenta la cantidad de casos por técnico 
 
 def listas_matriz(identificadores, tecnicos):
     matriz = []
@@ -360,7 +326,6 @@ def conservar_unicos(matriz):
     unicos = []
     for i in range(len(matriz)):
         tecnico = matriz[i][1]
-        # Usamos validacion para ver si ya está en unicos
         if validacion(unicos, tecnico) == -1:
             unicos.append(tecnico)
     return unicos
@@ -401,11 +366,8 @@ def mostrar_casos_por_tecnico():
         print(f"Técnico: {matriz[i][0]:5} - Casos asignados: {matriz[i][1]:5}")
          
 #  PROGRAMA PRINCIPAL
-# Primero pedimos login al usuario
 login()
-# Inicializamos opcion con -1 para evitar error de variable no definida antes de entrar al while
 opcion = -1
-# mostramos el menu mientras el usuario no elija salir (osea la opcion 0)
 while opcion != 0:
     opcion = mostrar_menu()
 
@@ -422,7 +384,7 @@ while opcion != 0:
     elif opcion == 6:
         modificacion_tecnico()
     elif opcion == 7:
-        baja_tecnico
+        baja_tecnico()
     elif opcion == 8:
         mostrar_casos_por_tecnico()
 
