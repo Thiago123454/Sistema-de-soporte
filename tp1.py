@@ -1,4 +1,4 @@
-# 1 VARIABLES GLOBALES
+#  VARIABLES GLOBALES
 # Definimos listas globales asi podemos acceder a los datos desde cualquier parte del programa, puse admin primero porque el profe dijo que todos los sistemas tienen una asi
 import random
 usuarios = ["admin", "Luciana", "Thiago", "Yanina", "Emiliano", "Franco"]
@@ -21,7 +21,7 @@ estado = ["Activo", "Activo", "Activo", "Activo", "Activo"]
 
 prioridades = [1, 2, 3, 1, 2]  # 1 = alta 2 = media 3 = baja
 
-# 2 FUNCION DE LOGIN
+#  FUNCION DE LOGIN
 
 # Esta funcion valida el acceso del usuario, se va a repetir hasta que se ingresen usuario y contraseña validos
 
@@ -47,18 +47,18 @@ def login():
         else:
             print("Usuario o contraseña incorrectos. Intente nuevamente.")
 
-# 3 FUNCION PARA MOSTRAR EL MENU Y VALIDAR LA OPCION
+#  FUNCION PARA MOSTRAR EL MENU Y VALIDAR LA OPCION
 
 def mostrar_menu():
     print("\n--- Menú principal ---")
     print("1. Alta de ticket")
     print("2. Baja de ticket")
     print("3. Modificación de ticket")
-    print("4. Listado general")
-    print("5. Cantidad de casos por tecnico")
-    print("6. Alta de tecnico")
-    print("7. Modificacion de tecnicos")
-    print("8. Baja de tecnicos")
+    print("4. Listado general por prioridad")
+    print("5. Alta de tecnico")
+    print("6. Modificacion de tecnicos")
+    print("7. Baja de tecnicos")
+    print("8. Cantidad de casos por tecnico")
     print("0. Salir del sistema")
 
     opcion = -1 # Valor inicial invalido para entrar al ciclo de validacion
@@ -74,58 +74,8 @@ def mostrar_menu():
             print("Opción inválida. Debe estar entre 0 y 8.")
 
     return opcion
-#  ALTA DE TECNICO
-def alta_tecnico():
-    print("\n--- Alta de nuevo tecnico ---")
-    nombre_nuevo = input("Ingrese el nombre del nuevo tecnico: ")
-    nombres.append(nombre_nuevo)
-    print(nombres)
-    codigo_valido = -2
-    while codigo_valido != -1:
-        codigo = input("Ingrese el código del tecnico (debe incluir 3 letras y 3 números. Ej TEC123): ")
-        codigo_valido = validacion(legajos, codigo)
-        if codigo_valido != -1:
-            print("El código de tecnico ya está en la lista. Intentelo de nuevo.")
-        else:
-            legajos.append(codigo)
-            estado.append("Activo")
-            print(legajos)
-            print(estado)
-    
-# MODIFICACION DE TECNICO
-def modificacion_tecnico():
-    print("\n--- Modificacion de tecnico ya existente---")
-    tecnico_valido = -1
-    while tecnico_valido == -1:
-        tecnico_a_modificar = input("Ingrese el tecnico que quiere modificar: ")
-        tecnico_valido = validacion(legajos, tecnico_a_modificar)
-        if tecnico_valido == -1:
-            print("Tecnico a modificar inexistente. Intente de nuevo.")
-        else:
-            posicion_tecnico_en_legajos = tecnico_valido
-            nombre_nuevo = input("Ingrese el nombre nuevo a reemplazar: ")
-            nombres[posicion_tecnico_en_legajos] = nombre_nuevo
-            print(legajos)
-            print(nombres)
-            print(estado)      
-# BAJA DE TECNICO
-def baja_tecnico():
-    print("\n--- Baja de tecnico ---")
-    legajo_correcto = -1
-     # Repetimos hasta que se encuentre un id valido
-    while legajo_correcto == -1:
-        legajo_borrar = input("Ingrese el legajo de tecnico a eliminar: ")
-        legajo_correcto = validacion(legajos, legajo_borrar)
-        if legajo_correcto == -1:
-            print("El legajo no existe. Intente nuevamente.")
-        else:
-            posicion = legajo_correcto
-            inactivo = "Inactivo"
-            estado[posicion] = inactivo
-    print(legajos)
-    print(nombres)
-    print(estado)
-# 4 ALTA DE TICKET
+
+#  ALTA DE TICKET
 
 def alta_ticket():
     print("\n--- Alta de nuevo ticket ---")
@@ -152,7 +102,7 @@ def alta_ticket():
 # Generamos un numero random entre 1000 y 9999
     numeroRandom = random.randint(1000, 9999)
     repetido = validacion(identificadores, numeroRandom)
-    while repetido == True:
+    while repetido != -1:
             numeroRandom = random.randint(1000, 9999)
             repetido = validacion(identificadores, numeroRandom)
     nuevo_id = numeroRandom  # Lo usamos como identificador final
@@ -179,7 +129,7 @@ def validacion(lista, numero):
     else:
         return -1  
 
-# 5 BAJA DE TICKET
+#  BAJA DE TICKET
 
 def baja_ticket():
     print("\n--- Baja de ticket ---")
@@ -214,7 +164,7 @@ def baja_ticket():
 
 
 
-# 6 MODIFICACIÓN DE TICKET
+#  MODIFICACIÓN DE TICKET
 
 def modificar_ticket():
     print("\n--- Modificación de ticket ---")
@@ -277,7 +227,7 @@ def modificar_ticket():
     else:
         print("Opción inválida.")
 
-# 7 LISTADO GENERAL DE TICKETS
+#  LISTADO GENERAL DE TICKETS
 
 def listado_general():
     print("\n--- Listado general de tickets (ordenados por prioridad) ---")
@@ -340,7 +290,62 @@ def listado_general():
 
         # Sumamos 1 a 'i' para pasar al siguiente ticket
         i = i + 1
-# Función que cuenta la cantidad de casos por técnico 
+
+# ALTA DE TECNICO
+def alta_tecnico():
+    print("\n--- Alta de nuevo tecnico ---")
+    nombre_nuevo = input("Ingrese el nombre del nuevo tecnico: ")
+    nombres.append(nombre_nuevo)
+    print(nombres)
+    codigo_valido = -2
+    while codigo_valido != -1:
+        codigo = input("Ingrese el código del tecnico (debe incluir 3 letras y 3 números. Ej TEC123): ")
+        codigo_valido = validacion(legajos, codigo)
+        if codigo_valido != -1:
+            print("El código de tecnico ya está en la lista. Intentelo de nuevo.")
+        else:
+            legajos.append(codigo)
+            estado.append("Activo")
+            print(legajos)
+            print(estado)
+    print("\nSe creó el siguiente tecnico:")
+    print("Legajo:", legajos)
+    print("Nombre:", nombres)
+#  MODIFICACION DE TECNICO
+def modificacion_tecnico():
+    print("\n--- Modificacion de tecnico ya existente---")
+    tecnico_valido = -1
+    while tecnico_valido == -1:
+        tecnico_a_modificar = input("Ingrese el tecnico que quiere modificar: ")
+        tecnico_valido = validacion(legajos, tecnico_a_modificar)
+        if tecnico_valido == -1:
+            print("Tecnico a modificar inexistente. Intente de nuevo.")
+        else:
+            posicion_tecnico_en_legajos = tecnico_valido
+            nombre_nuevo = input("Ingrese el nombre nuevo a reemplazar: ")
+            nombres[posicion_tecnico_en_legajos] = nombre_nuevo
+            print(legajos)
+            print(nombres)
+            print(estado)      
+#  BAJA DE TECNICO
+def baja_tecnico():
+    print("\n--- Baja de tecnico ---")
+    legajo_correcto = -1
+     # Repetimos hasta que se encuentre un id valido
+    while legajo_correcto == -1:
+        legajo_borrar = input("Ingrese el legajo de tecnico a eliminar: ")
+        legajo_correcto = validacion(legajos, legajo_borrar)
+        if legajo_correcto == -1:
+            print("El legajo no existe. Intente nuevamente.")
+        else:
+            posicion = legajo_correcto
+            inactivo = "Inactivo"
+            estado[posicion] = inactivo
+    print(legajos)
+    print(nombres)
+    print(estado)
+
+# Funciones para la matriz que cuenta la cantidad de casos por técnico 
 
 def listas_matriz(identificadores, tecnicos):
     matriz = []
@@ -393,10 +398,9 @@ def mostrar_casos_por_tecnico():
     print("\n--- Cantidad de casos por técnico ---")
     matriz = casos_por_tecnico(identificadores, tecnicos)
     for i in range(len(matriz)):
-        print("Técnico:", matriz[i][0], "- Casos asignados:", matriz[i][1])
+        print(f"Técnico: {matriz[i][0]:5} - Casos asignados: {matriz[i][1]:5}")
          
-
-# 8 PROGRAMA PRINCIPAL
+#  PROGRAMA PRINCIPAL
 # Primero pedimos login al usuario
 login()
 # Inicializamos opcion con -1 para evitar error de variable no definida antes de entrar al while
@@ -414,13 +418,13 @@ while opcion != 0:
     elif opcion == 4:
         listado_general()
     elif opcion == 5:
-        mostrar_casos_por_tecnico()
-    elif opcion == 6:
         alta_tecnico()
-    elif opcion == 7:
+    elif opcion == 6:
         modificacion_tecnico()
+    elif opcion == 7:
+        baja_tecnico
     elif opcion == 8:
-        baja_tecnico()
+        mostrar_casos_por_tecnico()
 
 print("Gracias por usar el sistema. Fin.")
 
