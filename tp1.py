@@ -289,9 +289,13 @@ def modificacion_tecnico():
             posicion_tecnico_en_legajos = tecnico_valido
             nombre_nuevo = input("Ingrese el nombre nuevo a reemplazar: ")
             nombres[posicion_tecnico_en_legajos] = nombre_nuevo
-    print("\nLista de tecnicos actualizada:")
-    print("Legajos:", legajos)
-    print("Nombres:", nombres)      
+            print("\nLista de tecnicos actualizada:")
+            print("Legajos:", legajos)
+            print("Nombres:", nombres)
+            if estado[posicion_tecnico_en_legajos] == "Inactivo":
+                estado[posicion_tecnico_en_legajos] = "Activo"
+            print("Estados: ", estado)
+            
 #  BAJA DE TECNICO
 def baja_tecnico():
     print("\n--- Baja de tecnico ---")
@@ -305,6 +309,9 @@ def baja_tecnico():
             posicion = legajo_correcto
             inactivo = "Inactivo"
             estado[posicion] = inactivo
+            print(f"El Tecnico {legajo_borrar} fue dado de baja exitosamente.")
+            print(legajos)
+            print(estado)
 
 # Funciones para la MATRIZ que cuenta la cantidad de casos por técnico 
 
