@@ -225,41 +225,39 @@ def modificar_ticket():
     # repetimos hasta que se ingrese un id que exista
     while posicion == -1:
         id_modificar = int(input("Ingrese el identificador del ticket a modificar: "))
-        id_correcto = validacion(identificadores, id_modificar)
+        posicion = validacion(identificadores, id_modificar)
         if posicion == -1:
             print("El identificador no existe. Intente nuevamente.")
-        else:
-            posicion = id_correcto
 
     # Mostramos opciones para modificar
-        print("1. Modificar descripción")
-        print("2. Modificar técnico")
-        print("3. Modificar prioridad")
-        opcion = int(input("¿Qué desea modificar? (1-3): ")) #
+    print("1. Modificar descripción")
+    print("2. Modificar técnico")
+    print("3. Modificar prioridad")
+    opcion = int(input("¿Qué desea modificar? (1-3): ")) #
 
-        if opcion == 1:
-            nueva_desc = input("Ingrese nueva descripción: ")
-            descripciones[posicion] = nueva_desc
-            print("Descripción actualizada.")
-        elif opcion == 2:
-            print(identificadores)
-            print(descripciones)
-            print(tecnicos)
-            tecnico_valido = -1
-            while tecnico_valido == -1:
-                nuevo_tec = input("Ingrese nuevo código de técnico: ")
-                tecnico_valido = validacion(legajos, nuevo_tec)
-                if tecnico_valido == -1:
-                    print("Técnico inválido. Intente de nuevo.")
-                else:
-                    if estado[tecnico_valido] == "Inactivo":
-                        print("Tecnico dado de baja, escoja otro tecnico")
-                        tecnico_valido = -1
+    if opcion == 1:
+        nueva_desc = input("Ingrese nueva descripción: ")
+        descripciones[posicion] = nueva_desc
+        print("Descripción actualizada.")
+    elif opcion == 2:
+        print(identificadores)
+        print(descripciones)
+        print(tecnicos)
+        tecnico_valido = -1
+        while tecnico_valido == -1:
+            nuevo_tec = input("Ingrese nuevo código de técnico: ")
+            tecnico_valido = validacion(legajos, nuevo_tec)
+            if tecnico_valido == -1:
+                print("Técnico inválido. Intente de nuevo.")
+            else:
+                if estado[tecnico_valido] == "Inactivo":
+                    print("Tecnico dado de baja, escoja otro tecnico")
+                    tecnico_valido = -1
                 
                     
 
-            tecnicos[posicion] = nuevo_tec
-            print("Técnico actualizado.")
+        tecnicos[posicion] = nuevo_tec
+        print("Técnico actualizado.")
 # Si el usuario elige la opcion 2, quiere modificar el tecnico asignado a un ticket
 # 1ro mostramos cuales son los codigos validos que puede usar, por eso el print de tecnicos validos
 # Despues entramos a un ciclo (while tecnico_valido == 0:) que se repite hasta que ingrese un codigo correcto
@@ -267,17 +265,17 @@ def modificar_ticket():
 # si no coincide con ninguno, se vuelve a pedir
 # cuando se encuentra uno valido, se actualiza el valor en la lista de tecnicos y se avisa que se modifico 
             
-        elif opcion == 3:
-            nueva_prio = 0
-            while nueva_prio != 1 and nueva_prio != 2 and nueva_prio != 3:
-                nueva_prio = int(input("Ingrese nueva prioridad (1=Alta, 2=Media, 3=Baja): "))
-                if nueva_prio != 1 and nueva_prio != 2 and nueva_prio != 3:
-                    print("Prioridad inválida.")
-                else:
-                    prioridades[posicion] = nueva_prio #Modificado por Thiago
-                    print("Prioridad actualizada.")
-        else:
-            print("Opción inválida.")
+    elif opcion == 3:
+        nueva_prio = 0
+        while nueva_prio != 1 and nueva_prio != 2 and nueva_prio != 3:
+            nueva_prio = int(input("Ingrese nueva prioridad (1=Alta, 2=Media, 3=Baja): "))
+            if nueva_prio != 1 and nueva_prio != 2 and nueva_prio != 3:
+                print("Prioridad inválida.")
+            else:
+                prioridades[posicion] = nueva_prio #Modificado por Thiago
+                print("Prioridad actualizada.")
+    else:
+        print("Opción inválida.")
 
 # 7 LISTADO GENERAL DE TICKETS
 
@@ -343,40 +341,60 @@ def listado_general():
         # Sumamos 1 a 'i' para pasar al siguiente ticket
         i = i + 1
 # Función que cuenta la cantidad de casos por técnico 
-# MODIFICAR
-def obtener_cantidad_casos(tecnicos_asignados, tecnico):
+
+def listas_matriz(identificadores, tecnicos):
+    matriz = []
+    filas_matriz = len(identificadores)
+    for i in range(filas_matriz):
+        fila = []
+        fila.append(identificadores[i])
+        fila.append(tecnicos[i])
+        matriz.append(fila)
+    return matriz
+def conservar_unicos(matriz):
+    unicos = []
+    for i in range(len(matriz)):
+        tecnico = matriz[i][1]
+        # Usamos validacion para ver si ya está en unicos
+        if validacion(unicos, tecnico) == -1:
+            unicos.append(tecnico)
+    return unicos
+
+def obtener_cantidad_categoria(tecnicos_totales, tecnico_buscado):
     cantidad = 0
-    i = 0
-    while i < len(tecnicos_asignados):
-        if tecnicos_asignados[i] == tecnico:
+    for i in range(len(tecnicos_totales)):
+        if tecnicos_totales[i] == tecnico_buscado:
             cantidad = cantidad + 1
-        i = i + 1
     return cantidad
 
-# Función que arma la matriz de estadísticas
-def armar_matriz_tecnicos(tecnicos_validos, tecnicos_asignados):
-    matriz_tecnicos = []
+def armar_matriz_estadisticas(tecnicos_unicos, tecnicos_totales):
+    matriz_estadisticas = []
     i = 0
-    while i < len(tecnicos_validos):
-        tecnico = tecnicos_validos[i]
-        cantidad = obtener_cantidad_casos(tecnicos_asignados, tecnico)
-        fila = [tecnico, cantidad]
-        matriz_tecnicos.append(fila)  # Agregamos una fila: técnico y cantidad de casos
+    while i < len(tecnicos_unicos):
+        tecnico = tecnicos_unicos[i]
+        cantidad = obtener_cantidad_categoria(tecnicos_totales, tecnico)
+        fila = []
+        fila.append(tecnico)
+        fila.append(cantidad)
+        matriz_estadisticas.append(fila)
         i = i + 1
-    return matriz_tecnicos
+    return matriz_estadisticas
 
-# Mostrar el informe en pantalla
+def casos_por_tecnico(identificadores, tecnicos):
+    matriz = listas_matriz(identificadores, tecnicos)
+    tecnicos_unicos = conservar_unicos(matriz)
+    tecnicos_totales = []
+    for i in range(len(matriz)):
+        tecnicos_totales.append(matriz[i][1])
+    matriz_estadisticas = armar_matriz_estadisticas(tecnicos_unicos, tecnicos_totales)
+    return matriz_estadisticas
+
 def mostrar_casos_por_tecnico():
-    print("\n--- Cantidad de casos asignados por técnico ---")
-    tecnicos_validos = ["TEC123", "ABC456", "XYZ789", "JKL321", "DEF654"]
-    matriz = armar_matriz_tecnicos(tecnicos_validos, tecnicos)
-
-    i = 0
-    while i < len(matriz):
+    print("\n--- Cantidad de casos por técnico ---")
+    matriz = casos_por_tecnico(identificadores, tecnicos)
+    for i in range(len(matriz)):
         print("Técnico:", matriz[i][0], "- Casos asignados:", matriz[i][1])
-        i = i + 1
-
-
+         
 
 # 8 PROGRAMA PRINCIPAL
 # Primero pedimos login al usuario
